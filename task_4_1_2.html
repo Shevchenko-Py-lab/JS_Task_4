@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    	/*Сделайте в стиле es5, а затем в стиле es6 (по аналогии из дополнительных 
+		видео -> 3 примеры наследования -> механика наследования), 
+		а) конструктор Post, который принимает параметры author, text, date и сохраняет их как свойства объекта. Объекты 
+		типа Post должны иметь метод edit, который будет принимать текст и записывать его в свойство text объекта.
+		б) конструктор AttachedPost, который принимает параметры author, text, date. Проинициализируйте эти свойства с помощью конструктора Post, чтобы не дублировать код. Также в конструкторе AttachedPost должно создаваться 
+		свойство highlighted со значением false. Унаследуйте в объектах типа AttachedPost методы из Post.Объекты типа AttachedPost должны иметь метод makeTextHighlighted, который будет назначать свойству highlighted значение true */
+
+        function Post(author, text, date){
+        	this.author = author;
+        	this.text = text;
+        	this.date = date;
+        }
+
+        Post.prototype.show = function() {
+        	alert("Пост создан " + this.author + " " + this.text + " " + this.date)
+        }
+
+        Post.prototype.edit = function(newText) {
+        	if (newText !== ''){
+        		this.text = newText;
+        	}
+        }
+
+        let newPost = new Post('Vasya', 'Hello world', '31.12.2021')
+        newPost.show();
+
+        newPost.edit("New world")
+        newPost.show();
+        //newPost.edit(prompt()) - потестировать валидацию, я там ещё предложил поставить while, если включить эту строку
+        //newPost.show();
+
+        function AttachedPost(author, text, date){
+        	Post.call(this, author, text, date);
+        	this.highlighted = false;
+        }
+
+        AttachedPost.prototype = Object.create(Post.prototype);
+        AttachedPost.prototype.constructor = AttachedPost;
+
+        AttachedPost.prototype.makeTextHighlighted = function() {
+        	this.highlighted = true;
+        }
+
+        AttachedPost.prototype.showPost = function() {
+        	alert("Пост создан " + this.author + " " + this.text + " " + this.date)
+        }
+
+        let newPost2 = new AttachedPost('Nikolaj', 'Lalilalaj', '31.12.2021')
+        newPost2.show();
+        console.log(newPost2);
+        newPost2.makeTextHighlighted();
+        console.log(newPost2);
+
+
+    </script>
+ </body>
+ </html>
